@@ -2,20 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  ChevronDown,
-  FolderOpen,
-  Heart,
-  HelpCircle,
-  Menu,
-  Search,
-  ShoppingBag,
-  UserRound,
-  X,
-} from "lucide-react";
+import { ChevronDown, Menu, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { company, navLinks } from "@/lib/site-data";
-import { defaultWhatsAppMessage } from "@/lib/whatsapp";
 
 type MegaLink = {
   label: string;
@@ -36,466 +25,473 @@ type MegaCategory = {
   seeAll: string;
 };
 
+type ServiceMenuItem = {
+  key: string;
+  label: string;
+  href: string;
+  subtypes: string[];
+};
+
+const serviceMenu: ServiceMenuItem[] = [
+  {
+    key: "designing",
+    label: "Designing",
+    href: "/designing",
+    subtypes: [
+      "Logos (Brand Identity)",
+      "Calligraphy & Vector Art",
+      "Business Cards",
+      "Letterhead Design",
+      "Brochures Design",
+      "Flyers Design",
+      "Posters Design",
+      "Banners Design",
+      "Certificates Design",
+      "Invitation Cards",
+      "Car Wrap Design",
+      "LED Signages Design",
+      "Social Media Creatives",
+      "Product Packaging Labels & Stickers Design",
+    ],
+  },
+  {
+    key: "solvent-eco-solvent-printing",
+    label: "Solvent - Eco Solvent Printing",
+    href: "/solvent-eco-solvent-printing",
+    subtypes: [
+      "Flex Printing",
+      "Vinyl with Foam",
+      "Black Back Flex",
+      "Star Flex",
+      "Flex With Wooden Frame",
+      "Self-Adhesive Vinyl Prints",
+      "Backlit Flex",
+      "Glass Filming",
+      "Frosted/Office Film",
+      "Floor Graphics Printing",
+      "Tabletop Printing",
+      "Exhibition Backdrops",
+      "Cutout Standees",
+      "One Way Vision",
+      "Redium Sticker",
+      "UV Print",
+      "Fabric Print",
+      "Canvas Print",
+      "Transparent Vinyl",
+      "Retro Vinyl",
+      "Vinyl Print & Cut",
+      "Night Glow Vinyl",
+      "Sunpack",
+      "Canopy Stand",
+      "Translit",
+      "Rollup Standy",
+      "Sunboard Standee",
+      "Car Branding",
+      "Wallpaper Printing",
+      "Graffiti Wall Print",
+      "Entry Gate",
+      "MS Standy",
+    ],
+  },
+  {
+    key: "digital-printing",
+    label: "Digital Printing",
+    href: "/digital-printing",
+    subtypes: [
+      "12x18/A4 Print",
+      "Transparent Sticker",
+      "Texture Paper",
+      "NT Paper & NT Sticker",
+      "Sticker Paper + Half Cutting",
+      "Product Label Printing",
+      "Any Shape Full Die Cutting",
+      "Tags Printing",
+      "Coupon Printing",
+      "Wristband Printing",
+      "Certificate Printing",
+      "Tent Cards",
+      "Invitation Card Printing",
+      "Menu Card",
+      "Danglers Printing",
+      "Barcode Sticker",
+      "Safety Signage Posters",
+      "Door Hangers",
+      "Vehicle Parking Stickers",
+      "Cable Tag Printing",
+      "Roll Labels Printing",
+      "Label Printing",
+      "Pawati Book Printing",
+      "Gift Voucher",
+      "Packaging Sticker",
+      "Packaging Sleeves",
+      "Wrapping Paper",
+      "Custom Car Stickers",
+      "Seal Stickers",
+      "Ticket Printing",
+      "Rack Card",
+      "Bookmark Printing",
+      "PVC Cards",
+      "ID Card Printing",
+      "Lanyard Printing",
+      "Header Cards",
+      "Shelf Wobblers",
+      "Bottle Neck Tags",
+      "Ribbon Badge",
+      "Tree Tag",
+      "Swing Tags",
+      "Photo Frame",
+      "Cloth Tag",
+      "Cutout",
+    ],
+  },
+  {
+    key: "offset-printing",
+    label: "Offset Printing",
+    href: "/offset-printing",
+    subtypes: [
+      "Business Card Printing",
+      "Envelope Printing",
+      "Brochure Printing",
+      "Leaflet Printing",
+      "Letterhead Printing",
+      "Register Printing",
+      "Bank Form Printing",
+      "File Printing",
+      "Hospital File Printing",
+      "Pocket Folder",
+      "Prescription Pad",
+      "Calendar Printing",
+      "Diary Printing",
+      "Parking Valet Card",
+      "Cardsheet Printing",
+      "Bill Book Printing",
+      "Receipt / DC Book Printing",
+      "Notebooks",
+      "Sticker Roll Printing",
+      "Product Catalogue",
+      "Nonwoven Bags",
+      "Book Printing",
+      "Table Calendar",
+      "Paper Bag",
+      "Catalogue Printing",
+      "Note Pads Printing",
+      "Synthetic Tags",
+      "Report Printing",
+    ],
+  },
+  {
+    key: "stamp",
+    label: "Stamp",
+    href: "/stamps-screen-pad-printing",
+    subtypes: [
+      "Sun Stamp",
+      "Plus Stamp",
+      "Colop Numbering Stamp",
+      "Colop Dater Stamp",
+      "Dolphin Dater Stamp",
+      "Dolphin Numbering",
+      "Trodat Stamp",
+      "Colop Mouse Stamp",
+      "Small Rubber Stamp",
+      "Big Rubber Stamp",
+      "Stamp Pad",
+    ],
+  },
+  {
+    key: "screen-printing",
+    label: "Screen Printing",
+    href: "/stamps-screen-pad-printing",
+    subtypes: [
+      "Polycarbonate Labels & Sticker",
+      "Metal QR Code Tags",
+      "Sunpack Printing",
+      "Bag Printing",
+      "Aluminium Name Plates",
+      "Vinyl Printing",
+      "Bottle Printing",
+      "MS/SS Screen Printing",
+      "Plastic Crate",
+      "Redium Printing",
+      "Polyester Printing",
+      "PP Box",
+      "Corrugated Box",
+      "Textile Printing",
+      "Glass Printing",
+      "Wooden Printing",
+    ],
+  },
+  {
+    key: "pad-printing",
+    label: "Pad Printing",
+    href: "/stamps-screen-pad-printing",
+    subtypes: ["Various Industrial Objects (Automotive, Electrical, Cosmetics, Appliances)"],
+  },
+  {
+    key: "badges-sticker-keychain",
+    label: "Badges, Sticker & Keychain",
+    href: "/badges-stickers-keychains",
+    subtypes: [
+      "Dome Sticker",
+      "SS Dome Sticker",
+      "Dome Keychain",
+      "Acrylic Keychain",
+      "Acrylic Shape Cut Epoxy Badges",
+      "SS Metal Epoxy Badges",
+      "Acrylic Epoxy Badges",
+      "Aluminium Epoxy Badges",
+      "Round Metal Epoxy Badges",
+      "SS Keychain",
+      "Keychain Badge",
+      "Pin Button Badges",
+      "Magnet Button Badges",
+      "Name Badges",
+      "Rexine Leather Keychain",
+    ],
+  },
+  {
+    key: "corporate-gifts",
+    label: "Corporate Gifts",
+    href: "/corporate-gifts",
+    subtypes: [
+      "Mug Printing",
+      "Cap Printing",
+      "T-shirt Printing",
+      "Mousepad Printing",
+      "Flasks (Bottle)",
+      "Pen Printing",
+      "Diaries",
+      "Tumblers",
+      "Card Holder",
+      "Reflective Safety Printing",
+      "Mobile/Laptop Stand",
+      "Employee Welcome Kit",
+    ],
+  },
+  {
+    key: "engraving-marking",
+    label: "Engraving & Marking",
+    href: "/engraving-marking",
+    subtypes: [
+      "Gold / Silver Laser Etched Plates",
+      "ABS Plastic Marking",
+      "Anodised Aluminium Plates",
+      "Automobile Parts",
+      "Metal Parts Marking",
+      "Ss Etching Plate",
+      "Traffolite Signage",
+      "Leather Marking",
+      "QR Code",
+      "Black Stainless Marking",
+      "Bulb Marking",
+      "Watch Case",
+      "SS Marking",
+      "Hardware Tool Marking",
+      "Polymer Material",
+    ],
+  },
+  {
+    key: "signages",
+    label: "Signages",
+    href: "/signages",
+    subtypes: [
+      "Standee Signage",
+      "Sunboard / Foam Board",
+      "Foam Sign Board",
+      "Fabric Signage",
+      "Backlit Board Signage",
+      "Aluminium Clip-on Frame",
+      "Pylon Signage",
+      "Night Glow Signage",
+      "Acrylic Sandwich Frame",
+      "White Board & Stand",
+      "2D LED Signage",
+      "Easel Stands",
+      "Magnetic Signage",
+      "3D LED Signage",
+      "SS Letter Signage",
+      "Acrylic Letter Signages",
+      "Profile Bending Signage",
+      "MS Letter Signage",
+      "Sparkling/Crystal Signage",
+      "Liquid Letter Signage",
+      "Lobby Sign Signage",
+      "Retro Sign Signage",
+      "Industrial Display Signage",
+      "Acrylic Folder Signage",
+      "Scrolling Signage",
+      "Acrylic Magnetic Folder",
+      "Acrylic Name Board Signage",
+      "Acrylic First Aid Box",
+      "Acrylic Suggestion Box",
+      "Acrylic Customized Box",
+      "Acrylic Name Plate",
+      "Neon Signage",
+      "3D Acrylic LED Lamp",
+      "Table Name Plate",
+      "Acrylic Signage",
+      "ACP Gate Signage",
+      "QR Code Standee",
+      "MS Frame + Backlight",
+      "ACP Signage",
+      "Reverse Printed Acrylic Frames",
+      "LED Lamp",
+      "Wooden Name Plate",
+    ],
+  },
+  {
+    key: "premium-signages",
+    label: "Premium Signages",
+    href: "/premium-safety-signages",
+    subtypes: [
+      "Way Finding Sign",
+      "Free Hand Sign",
+      "Directory Sign",
+      "Table Top",
+      "Flat (home) Nameplate",
+      "Plaque",
+      "Awards",
+      "Hangers",
+      "3D Signs",
+      "2D Signs",
+      "Acrylic Sign",
+    ],
+  },
+  {
+    key: "safety-signage",
+    label: "Safety Signage",
+    href: "/premium-safety-signages",
+    subtypes: [
+      "Mandatory Safety Signage",
+      "Emergency Exit",
+      "Mandatory Sign",
+      "Recycle Signs",
+      "Warning Signs",
+      "Fire Signs",
+      "Prohibition Sign",
+      "Safety Floor Signs",
+      "Road Signs",
+      "Photoluminescent Signs",
+      "No Parking Sign",
+    ],
+  },
+  {
+    key: "laser-cnc-cutting",
+    label: "Laser & CNC Cutting",
+    href: "/laser-cnc-ferrule-printing",
+    subtypes: [
+      "MDF Cutting",
+      "MDF Engraving",
+      "ACP Cutting",
+      "Acrylic Jali Cutting",
+      "MS/SS Cutting",
+      "Acrylic Cutting",
+      "Acrylic Engraving",
+      "ACP Jali Cutting",
+    ],
+  },
+  {
+    key: "ferrule-printing",
+    label: "Ferrule Printing",
+    href: "/laser-cnc-ferrule-printing",
+    subtypes: ["Pvc Tube", "Heat Shrink Tube", "Marking Strip"],
+  },
+  {
+    key: "trophies-medals",
+    label: "Trophies & Medals",
+    href: "/trophies-medals-nameplates",
+    subtypes: [
+      "Acrylic Trophies",
+      "Wooden Trophies",
+      "Plastic Frames",
+      "Metal Frame",
+      "Foil Trophies",
+      "Metal Trophies",
+      "ABS Trophies",
+      "Flag Trophies",
+      "Cups",
+      "Medals",
+    ],
+  },
+  {
+    key: "anodized-aluminium-name-plates",
+    label: "Anodized Aluminium Name Plates",
+    href: "/trophies-medals-nameplates",
+    subtypes: ["Various Industrial Labels and Nameplates"],
+  },
+  {
+    key: "aluminium-sublimation-marking",
+    label: "Aluminium Sublimation & Marking",
+    href: "/trophies-medals-nameplates",
+    subtypes: [
+      "Silver/Golden Certificate",
+      "Sublimation Frame",
+      "Industrial Label",
+      "Metal Business Cards",
+      "Danger Label",
+      "Warning Signs",
+    ],
+  },
+  {
+    key: "fabrication",
+    label: "Fabrication",
+    href: "/laser-cnc-ferrule-printing",
+    subtypes: ["In-shop Branding", "MS Stands"],
+  },
+  {
+    key: "sublimation-printing",
+    label: "Sublimation Printing",
+    href: "/trophies-medals-nameplates",
+    subtypes: ["Deskpads Printing", "Fabric Printing", "Coaster Printing"],
+  },
+];
+
+function splitIntoColumns(item: ServiceMenuItem): MegaColumn[] {
+  const maxColumns = Math.min(4, Math.ceil(item.subtypes.length / 10) || 1);
+  const itemsPerColumn = Math.ceil(item.subtypes.length / maxColumns);
+
+  return Array.from({ length: maxColumns }, (_, index) => {
+    const links = item.subtypes.slice(index * itemsPerColumn, (index + 1) * itemsPerColumn);
+    return {
+      title: index === 0 ? item.label : `${item.label} ${index + 1}`,
+      links: links.map((label) => ({ label, href: item.href })),
+    };
+  }).filter((column) => column.links.length);
+}
+
+const allServiceColumns: MegaColumn[] = [
+  {
+    title: "Design & Printing",
+    links: serviceMenu.slice(0, 4).map((item) => ({ label: item.label, href: item.href })),
+  },
+  {
+    title: "Special Printing",
+    links: serviceMenu.slice(4, 9).map((item) => ({ label: item.label, href: item.href })),
+  },
+  {
+    title: "Signage & Industrial",
+    links: serviceMenu.slice(9, 15).map((item) => ({ label: item.label, href: item.href })),
+  },
+  {
+    title: "Awards & Finishing",
+    links: serviceMenu.slice(15).map((item) => ({ label: item.label, href: item.href })),
+  },
+];
+
 const megaCategories: MegaCategory[] = [
   {
     key: "all",
     label: "View All",
     href: "/#categories",
     seeAll: "see all printing, branding & signage products",
-    columns: [
-      {
-        title: "Most Popular",
-        links: [
-          { label: "Visiting Cards", href: "/offset-printing" },
-          { label: "Letterheads", href: "/offset-printing" },
-          { label: "Brochures", href: "/offset-printing" },
-          { label: "Stickers", href: "/digital-printing" },
-          { label: "LED Signages", href: "/signages" },
-          { label: "Corporate Gifts", href: "/corporate-gifts" },
-        ],
-      },
-      {
-        title: "Design & Print",
-        links: [
-          { label: "Logo Design", href: "/designing" },
-          { label: "Flyers", href: "/designing" },
-          { label: "Posters", href: "/solvent-eco-solvent-printing" },
-          { label: "Banners", href: "/solvent-eco-solvent-printing" },
-          { label: "Product Labels", href: "/digital-printing" },
-          { label: "Packaging Stickers", href: "/digital-printing" },
-        ],
-      },
-      {
-        title: "Industrial Solutions",
-        links: [
-          { label: "Safety Signages", href: "/premium-safety-signages" },
-          { label: "Name Plates", href: "/trophies-medals-nameplates" },
-          { label: "Ferrule Printing", href: "/laser-cnc-ferrule-printing" },
-          { label: "Engraving & Marking", href: "/engraving-marking" },
-          { label: "Laser & CNC Cutting", href: "/laser-cnc-ferrule-printing" },
-          { label: "Fabrication", href: "/laser-cnc-ferrule-printing" },
-        ],
-      },
-      {
-        title: "Brand Accessories",
-        links: [
-          { label: "Badges", href: "/badges-stickers-keychains" },
-          { label: "Keychains", href: "/badges-stickers-keychains" },
-          { label: "Trophies", href: "/trophies-medals-nameplates" },
-          { label: "Mug Printing", href: "/corporate-gifts" },
-          { label: "T-shirt Printing", href: "/corporate-gifts" },
-          { label: "Employee Welcome Kits", href: "/corporate-gifts", isNew: true },
-        ],
-      },
-    ],
+    columns: allServiceColumns,
   },
-  {
-    key: "cards",
-    label: "Visiting Cards",
-    href: "/offset-printing",
-    seeAll: "see all visiting cards",
-    columns: [
-      {
-        title: "Business Cards",
-        links: [
-          { label: "Standard Visiting Cards", href: "/offset-printing" },
-          { label: "Rounded Corner Visiting Cards", href: "/offset-printing" },
-          { label: "Classic Visiting Cards", href: "/offset-printing" },
-          { label: "Spot UV Visiting Cards", href: "/offset-printing" },
-          { label: "Metal Business Cards", href: "/trophies-medals-nameplates", isNew: true },
-        ],
-      },
-      {
-        title: "Matching Stationery",
-        links: [
-          { label: "Letterhead Printing", href: "/offset-printing" },
-          { label: "Envelope Printing", href: "/offset-printing" },
-          { label: "Pocket Folders", href: "/offset-printing" },
-          { label: "Note Pads", href: "/offset-printing" },
-          { label: "Presentation Folders", href: "/offset-printing" },
-        ],
-      },
-      {
-        title: "Design Help",
-        links: [
-          { label: "Logo Design", href: "/designing" },
-          { label: "Business Card Design", href: "/designing" },
-          { label: "Calligraphy & Vector Art", href: "/designing" },
-          { label: "Brand Identity", href: "/designing" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "stationery",
-    label: "Stationery, Letterheads & Notebooks",
-    href: "/offset-printing",
-    seeAll: "see all stationery, letterheads & notebooks",
-    columns: [
-      {
-        title: "Stationery",
-        links: [
-          { label: "Letterheads", href: "/offset-printing" },
-          { label: "Envelopes", href: "/offset-printing" },
-          { label: "Note Pads", href: "/offset-printing" },
-          { label: "Diaries", href: "/offset-printing" },
-          { label: "Table Calendars", href: "/offset-printing" },
-        ],
-      },
-      {
-        title: "Books & Pads",
-        links: [
-          { label: "Notebooks", href: "/offset-printing" },
-          { label: "Bill Books", href: "/offset-printing" },
-          { label: "Receipt/DC Books", href: "/offset-printing" },
-          { label: "Register Printing", href: "/offset-printing" },
-          { label: "Book Printing", href: "/offset-printing" },
-        ],
-      },
-      {
-        title: "Folders & Files",
-        links: [
-          { label: "File Printing", href: "/offset-printing" },
-          { label: "Hospital Files", href: "/offset-printing" },
-          { label: "Pocket Folders", href: "/offset-printing" },
-          { label: "Presentation Folders", href: "/offset-printing" },
-          { label: "Report Printing", href: "/offset-printing" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "stamps",
-    label: "Stamps and Ink",
-    href: "/stamps-screen-pad-printing",
-    seeAll: "see all stamps and special printing",
-    columns: [
-      {
-        title: "Stamps",
-        links: [
-          { label: "Plus Stamp", href: "/stamps-screen-pad-printing" },
-          { label: "Sun Stamp", href: "/stamps-screen-pad-printing" },
-          { label: "Trodat Stamp", href: "/stamps-screen-pad-printing" },
-          { label: "Rubber Stamp", href: "/stamps-screen-pad-printing" },
-          { label: "Stamp Pad", href: "/stamps-screen-pad-printing" },
-        ],
-      },
-      {
-        title: "Dater & Numbering",
-        links: [
-          { label: "Colop Dater Stamp", href: "/stamps-screen-pad-printing" },
-          { label: "Colop Numbering Stamp", href: "/stamps-screen-pad-printing" },
-          { label: "Dolphin Dater Stamp", href: "/stamps-screen-pad-printing" },
-          { label: "Dolphin Numbering", href: "/stamps-screen-pad-printing" },
-        ],
-      },
-      {
-        title: "Special Printing",
-        links: [
-          { label: "Screen Printing", href: "/stamps-screen-pad-printing" },
-          { label: "Pad Printing", href: "/stamps-screen-pad-printing" },
-          { label: "Bottle Printing", href: "/stamps-screen-pad-printing" },
-          { label: "Metal QR Code Tags", href: "/stamps-screen-pad-printing", isNew: true },
-        ],
-      },
-    ],
-  },
-  {
-    key: "signs",
-    label: "Signs, Posters & Marketing Materials",
-    href: "/signages",
-    seeAll: "see all signs, posters & marketing materials",
-    columns: [
-      {
-        title: "Signs and Posters",
-        links: [
-          { label: "Standees", href: "/signages" },
-          { label: "Posters", href: "/solvent-eco-solvent-printing" },
-          { label: "Bulk Posters", href: "/solvent-eco-solvent-printing" },
-          { label: "Banners", href: "/solvent-eco-solvent-printing" },
-          { label: "Tabletop Standees", href: "/signages" },
-          { label: "Foam Boards", href: "/signages" },
-          { label: "Acrylic Sign Holder", href: "/signages", isNew: true },
-          { label: "Shop all Signs & Posters", href: "/signages" },
-        ],
-      },
-      {
-        title: "Marketing Materials",
-        links: [
-          { label: "Flyers", href: "/designing" },
-          { label: "Presentation Folders", href: "/offset-printing" },
-          { label: "Brochures", href: "/offset-printing" },
-          { label: "Booklets", href: "/offset-printing" },
-          { label: "Bulk Flyers", href: "/designing" },
-          { label: "Postcards", href: "/digital-printing" },
-          { label: "Customized Portable Backdrops", href: "/solvent-eco-solvent-printing", isNew: true },
-          { label: "Promotional Canopy Tents", href: "/solvent-eco-solvent-printing", isNew: true },
-        ],
-      },
-      {
-        title: "More in Signs",
-        links: [
-          { label: "Acrylic Signs", href: "/signages" },
-          { label: "Outdoor Signs", href: "/signages" },
-          { label: "Plastic Signboards", href: "/signages" },
-          { label: "Board Signs", href: "/signages" },
-          { label: "Canvas Signs", href: "/solvent-eco-solvent-printing" },
-          { label: "Magnetic Signs", href: "/signages" },
-          { label: "LED Translite Sign Boards", href: "/signages", isNew: true },
-          { label: "LED Lollipop Display", href: "/signages", isNew: true },
-        ],
-      },
-      {
-        title: "More in Marketing",
-        links: [
-          { label: "Custom Car Door Decals", href: "/solvent-eco-solvent-printing" },
-          { label: "Customised Promo Tables", href: "/signages", isNew: true },
-          { label: "Custom Logo Flags", href: "/signages", isNew: true },
-          { label: "Menu Cards", href: "/digital-printing" },
-          { label: "Foldable Pop Up Banners", href: "/signages", isNew: true },
-          { label: "Loyalty Cards", href: "/digital-printing" },
-          { label: "Button Badges", href: "/badges-stickers-keychains" },
-          { label: "Paper Bags", href: "/offset-printing" },
-        ],
-      },
-      {
-        title: "Table Coverings",
-        links: [
-          { label: "Custom Tablecloths", href: "/solvent-eco-solvent-printing" },
-          { label: "Table Runners", href: "/solvent-eco-solvent-printing" },
-          { label: "Table Mats", href: "/digital-printing" },
-          { label: "Place Mats", href: "/digital-printing" },
-          { label: "Full-Print Paper Bags", href: "/offset-printing", isNew: true },
-          { label: "Elegant Fabric Standees", href: "/signages", isNew: true },
-          { label: "Customised QR Code Stand", href: "/signages" },
-          { label: "LED Display Stands", href: "/signages" },
-        ],
-      },
-      {
-        title: "Flags",
-        links: [
-          { label: "Table Flags", href: "/signages", isNew: true },
-          { label: "Cross Stand Table Flags", href: "/signages" },
-          { label: "Exchange Flags", href: "/signages" },
-          { label: "Tour Guide Flags", href: "/signages" },
-          { label: "Pole Flags", href: "/signages" },
-          { label: "Wall Mounted Flags", href: "/signages" },
-          { label: "Rectangle Flags", href: "/signages" },
-          { label: "Teardrop Flags", href: "/signages" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "labels",
-    label: "Labels, Stickers & Packaging",
-    href: "/digital-printing",
-    seeAll: "see all labels, stickers & packaging",
-    columns: [
-      {
-        title: "Stickers",
-        links: [
-          { label: "Sheet Stickers", href: "/digital-printing" },
-          { label: "Transparent Stickers", href: "/digital-printing" },
-          { label: "Custom Shape Stickers", href: "/digital-printing" },
-          { label: "Seal Stickers", href: "/digital-printing" },
-          { label: "Redium Stickers", href: "/solvent-eco-solvent-printing" },
-        ],
-      },
-      {
-        title: "Labels",
-        links: [
-          { label: "Product Labels", href: "/digital-printing" },
-          { label: "Roll Labels", href: "/digital-printing" },
-          { label: "Barcode Stickers", href: "/digital-printing" },
-          { label: "Bottle Neck Tags", href: "/digital-printing" },
-          { label: "Industrial Labels", href: "/trophies-medals-nameplates" },
-        ],
-      },
-      {
-        title: "Packaging",
-        links: [
-          { label: "Packaging Stickers", href: "/digital-printing" },
-          { label: "Packaging Sleeves", href: "/digital-printing" },
-          { label: "Wrapping Paper", href: "/digital-printing" },
-          { label: "Paper Bags", href: "/offset-printing" },
-          { label: "Nonwoven Bags", href: "/offset-printing" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "clothing",
-    label: "Clothing, Caps & Bags",
-    href: "/corporate-gifts",
-    seeAll: "see all clothing, caps & bags",
-    columns: [
-      {
-        title: "Clothing",
-        links: [
-          { label: "Custom Polo T-shirts", href: "/corporate-gifts" },
-          { label: "Custom T-shirts", href: "/corporate-gifts" },
-          { label: "Printed Polos - Multi Location", href: "/corporate-gifts" },
-          { label: "Reflective Safety Printing", href: "/corporate-gifts" },
-        ],
-      },
-      {
-        title: "Caps",
-        links: [
-          { label: "Cap Printing", href: "/corporate-gifts" },
-          { label: "Printed Caps", href: "/corporate-gifts" },
-          { label: "Embroidered Caps", href: "/corporate-gifts", isNew: true },
-        ],
-      },
-      {
-        title: "Bags",
-        links: [
-          { label: "Nonwoven Bags", href: "/offset-printing" },
-          { label: "Paper Bags", href: "/offset-printing" },
-          { label: "Laptop Bags", href: "/corporate-gifts" },
-          { label: "Employee Welcome Kits", href: "/corporate-gifts", isNew: true },
-        ],
-      },
-    ],
-  },
-  {
-    key: "gifts",
-    label: "Mugs, Albums & Gifts",
-    href: "/corporate-gifts",
-    seeAll: "see all mugs, albums & gifts",
-    columns: [
-      {
-        title: "Photo Gifts",
-        links: [
-          { label: "Mug Printing", href: "/corporate-gifts" },
-          { label: "Photo Albums", href: "/corporate-gifts" },
-          { label: "Canvas Prints", href: "/solvent-eco-solvent-printing" },
-          { label: "Photo Frames", href: "/digital-printing" },
-          { label: "Coaster Printing", href: "/trophies-medals-nameplates" },
-        ],
-      },
-      {
-        title: "Office Gifts",
-        links: [
-          { label: "Pen Printing", href: "/corporate-gifts" },
-          { label: "Diaries", href: "/corporate-gifts" },
-          { label: "Card Holder", href: "/corporate-gifts" },
-          { label: "Mobile/Laptop Stand", href: "/corporate-gifts" },
-        ],
-      },
-      {
-        title: "Awards",
-        links: [
-          { label: "Trophies", href: "/trophies-medals-nameplates" },
-          { label: "Medals", href: "/trophies-medals-nameplates" },
-          { label: "Plaques", href: "/premium-safety-signages" },
-          { label: "Awards", href: "/premium-safety-signages" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "pens",
-    label: "Personalised Pens",
-    href: "/corporate-gifts",
-    seeAll: "see all personalised pens",
-    columns: [
-      {
-        title: "Writing",
-        links: [
-          { label: "Pen Printing", href: "/corporate-gifts" },
-          { label: "Premium Pens", href: "/corporate-gifts" },
-          { label: "Employee Pens", href: "/corporate-gifts" },
-          { label: "Event Pens", href: "/corporate-gifts" },
-        ],
-      },
-      {
-        title: "Gift Sets",
-        links: [
-          { label: "Pen & Diary Sets", href: "/corporate-gifts" },
-          { label: "Welcome Kit Pens", href: "/corporate-gifts", isNew: true },
-          { label: "Corporate Gift Sets", href: "/corporate-gifts" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "drinkware",
-    label: "Drinkware",
-    href: "/corporate-gifts",
-    seeAll: "see all drinkware",
-    columns: [
-      {
-        title: "Drinkware",
-        links: [
-          { label: "Mug Printing", href: "/corporate-gifts" },
-          { label: "Flasks", href: "/corporate-gifts" },
-          { label: "Tumblers", href: "/corporate-gifts" },
-          { label: "Bottle Printing", href: "/stamps-screen-pad-printing" },
-          { label: "Employee Drinkware Kits", href: "/corporate-gifts", isNew: true },
-        ],
-      },
-      {
-        title: "Related Branding",
-        links: [
-          { label: "Bottle Labels", href: "/digital-printing" },
-          { label: "Transparent Labels", href: "/digital-printing" },
-          { label: "Packaging Stickers", href: "/digital-printing" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "polo",
-    label: "Custom Polo T-shirts",
-    href: "/corporate-gifts",
-    seeAll: "see all custom polo t-shirts",
-    columns: [
-      {
-        title: "Polo T-shirts",
-        links: [
-          { label: "Custom Polo T-shirts", href: "/corporate-gifts" },
-          { label: "Premium Polo T-shirts", href: "/corporate-gifts" },
-          { label: "Printed Polos - Multi Location", href: "/corporate-gifts" },
-          { label: "Staff Uniform Polos", href: "/corporate-gifts" },
-        ],
-      },
-      {
-        title: "Branding Add-ons",
-        links: [
-          { label: "Logo Design", href: "/designing" },
-          { label: "Name Badges", href: "/badges-stickers-keychains" },
-          { label: "Welcome Kits", href: "/corporate-gifts", isNew: true },
-        ],
-      },
-    ],
-  },
-  {
-    key: "tshirts",
-    label: "Custom T-Shirts",
-    href: "/corporate-gifts",
-    seeAll: "see all custom t-shirts",
-    columns: [
-      {
-        title: "T-shirts",
-        links: [
-          { label: "Custom T-shirts", href: "/corporate-gifts" },
-          { label: "Event T-shirts", href: "/corporate-gifts" },
-          { label: "Women's Polo T-shirts", href: "/corporate-gifts" },
-          { label: "Campaign T-shirts", href: "/corporate-gifts" },
-        ],
-      },
-      {
-        title: "More Apparel",
-        links: [
-          { label: "Caps", href: "/corporate-gifts" },
-          { label: "Bags", href: "/corporate-gifts" },
-          { label: "Reflective Safety Printing", href: "/corporate-gifts" },
-          { label: "Employee Welcome Kit", href: "/corporate-gifts", isNew: true },
-        ],
-      },
-    ],
-  },
+  ...serviceMenu.map((item) => ({
+    key: item.key,
+    label: item.label,
+    href: item.href,
+    seeAll: `see all ${item.label.toLowerCase()}`,
+    columns: splitIntoColumns(item),
+  })),
 ];
 
 function newPill() {
@@ -586,13 +582,11 @@ export function SiteHeader() {
     >
       <div className="header-main">
         <Link className="brand-lockup" href="/" aria-label="Shivrudra Graphics home">
-          <span className="brand-mark" aria-hidden="true">
-            {company.mark}
-          </span>
-          <span>
-            <strong>{company.name}</strong>
-            <small>{company.descriptor}</small>
-          </span>
+          <img
+            src="/images/home/logo.png"
+            alt="Shivrudra Graphics logo"
+            className="brand-logo"
+          />
         </Link>
 
         <label className="header-search">
@@ -601,45 +595,15 @@ export function SiteHeader() {
           <Search size={28} strokeWidth={2.3} />
         </label>
 
-        <div className="header-actions">
-          <a
-            className="header-utility help-utility"
-            href={defaultWhatsAppMessage("Help request")}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <HelpCircle size={26} />
-            <span>
-              Help is here
-              <small>{company.phoneDisplay}</small>
-            </span>
-          </a>
-          <Link className="header-utility" href="/contact">
-            <FolderOpen size={26} />
-            <span>My Projects</span>
-          </Link>
-          <Link className="header-utility" href="/clients">
-            <Heart size={26} />
-            <span>My Favorites</span>
-          </Link>
-          <Link className="header-utility" href="/contact">
-            <UserRound size={26} />
-            <span>Sign in</span>
-          </Link>
-          <Link className="header-utility" href="/contact">
-            <ShoppingBag size={26} />
-            <span>Cart</span>
-          </Link>
-          <button
-            className="icon-button mobile-menu-button"
-            type="button"
-            aria-expanded={open}
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((value) => !value)}
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
+        <button
+          className="icon-button mobile-menu-button"
+          type="button"
+          aria-expanded={open}
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
 
       <nav className="shop-nav" aria-label="Product categories">

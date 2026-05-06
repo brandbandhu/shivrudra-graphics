@@ -1,8 +1,10 @@
 import Link from "next/link";
 import {
+  ArrowRight,
   BookOpen,
   BriefcaseBusiness,
   Camera,
+  CheckCircle2,
   ChevronRight,
   Contact,
   Gift,
@@ -16,6 +18,7 @@ import {
   Stamp,
   Tag,
   Trophy,
+  Truck,
 } from "lucide-react";
 import { buildWhatsAppUrl, defaultWhatsAppMessage } from "@/lib/whatsapp";
 
@@ -39,7 +42,6 @@ type ProductKind =
 
 type StoreProduct = {
   title: string;
-  price: string;
   kind: ProductKind;
   href: string;
   tone?: string;
@@ -63,48 +65,48 @@ const categories: Category[] = [
 ];
 
 const popular: StoreProduct[] = [
-  { title: "Standard Visiting Cards", price: "BUY 100 @ Rs.200", kind: "cards", href: "/offset-printing" },
-  { title: "Rounded Corner Visiting Cards", price: "BUY 100 @ Rs.250", kind: "cards", href: "/offset-printing", tone: "orange" },
-  { title: "Letterheads", price: "BUY 50 @ Rs.250", kind: "folder", href: "/offset-printing" },
-  { title: "Photo Albums", price: "BUY 1 @ Rs.650", kind: "album", href: "/corporate-gifts" },
-  { title: "Stickers", price: "BUY 50 @ Rs.150", kind: "sticker", href: "/digital-printing", tone: "teal" },
-  { title: "Men's Polo T-shirts", price: "BUY 1 @ Rs.570", kind: "shirt", href: "/corporate-gifts", tone: "red" },
+  { title: "Standard Visiting Cards", kind: "cards", href: "/offset-printing" },
+  { title: "Rounded Corner Visiting Cards", kind: "cards", href: "/offset-printing", tone: "orange" },
+  { title: "Letterheads", kind: "folder", href: "/offset-printing" },
+  { title: "Photo Albums", kind: "album", href: "/corporate-gifts" },
+  { title: "Stickers", kind: "sticker", href: "/digital-printing", tone: "teal" },
+  { title: "Men's Polo T-shirts", kind: "shirt", href: "/corporate-gifts", tone: "red" },
 ];
 
 const trending: StoreProduct[] = [
-  { title: "Classic Visiting Cards", price: "BUY 100 @ Rs.200", kind: "cards", href: "/offset-printing", tone: "red" },
-  { title: "Spot UV Visiting Cards", price: "BUY 100 @ Rs.500", kind: "cards", href: "/offset-printing", tone: "green" },
-  { title: "Printed Caps", price: "BUY 1 @ Rs.350", kind: "cap", href: "/corporate-gifts" },
-  { title: "Premium Polo T-shirts", price: "BUY 1 @ Rs.570", kind: "shirt", href: "/corporate-gifts", tone: "gray" },
-  { title: "Printed Polos - Multi Location", price: "BUY 1 @ Rs.570", kind: "shirt", href: "/corporate-gifts", tone: "navy" },
-  { title: "Women's Polo T-shirts", price: "BUY 1 @ Rs.570", kind: "shirt", href: "/corporate-gifts", tone: "black" },
+  { title: "Classic Visiting Cards", kind: "cards", href: "/offset-printing", tone: "red" },
+  { title: "Spot UV Visiting Cards", kind: "cards", href: "/offset-printing", tone: "green" },
+  { title: "Printed Caps", kind: "cap", href: "/corporate-gifts" },
+  { title: "Premium Polo T-shirts", kind: "shirt", href: "/corporate-gifts", tone: "gray" },
+  { title: "Printed Polos - Multi Location", kind: "shirt", href: "/corporate-gifts", tone: "navy" },
+  { title: "Women's Polo T-shirts", kind: "shirt", href: "/corporate-gifts", tone: "black" },
 ];
 
 const labels: StoreProduct[] = [
-  { title: "Sheet Stickers", price: "BUY 24 @ Rs.150", kind: "sticker", href: "/digital-printing" },
-  { title: "Product & Packaging Labels", price: "BUY 24 @ Rs.150", kind: "sticker", href: "/digital-printing", tone: "green" },
-  { title: "Custom Shape Stickers", price: "BUY 10 @ Rs.190", kind: "sticker", href: "/digital-printing", tone: "black" },
-  { title: "Sticker Singles", price: "BUY 50 @ Rs.265", kind: "sticker", href: "/digital-printing", tone: "yellow" },
-  { title: "Self Adhesive Tapes", price: "BUY 6 @ Rs.6500", kind: "sticker", href: "/solvent-eco-solvent-printing", tone: "orange" },
-  { title: "Transparent Labels", price: "BUY 40 @ Rs.400", kind: "bottle", href: "/digital-printing" },
+  { title: "Sheet Stickers", kind: "sticker", href: "/digital-printing" },
+  { title: "Product & Packaging Labels", kind: "sticker", href: "/digital-printing", tone: "green" },
+  { title: "Custom Shape Stickers", kind: "sticker", href: "/digital-printing", tone: "black" },
+  { title: "Sticker Singles", kind: "sticker", href: "/digital-printing", tone: "yellow" },
+  { title: "Self Adhesive Tapes", kind: "sticker", href: "/solvent-eco-solvent-printing", tone: "orange" },
+  { title: "Transparent Labels", kind: "bottle", href: "/digital-printing" },
 ];
 
 const exploreMore: StoreProduct[] = [
-  { title: "Booklets", price: "BUY 1 @ Rs.160", kind: "book", href: "/offset-printing" },
-  { title: "Embroidered Laptop Bags", price: "BUY 1 @ Rs.1050", kind: "bag", href: "/corporate-gifts", tone: "black" },
-  { title: "Premium Laptop Bags", price: "BUY 1 @ Rs.1350", kind: "bag", href: "/corporate-gifts", tone: "navy" },
-  { title: "Presentation Folders", price: "BUY 10 @ Rs.520", kind: "folder", href: "/offset-printing", tone: "yellow" },
-  { title: "Brochures", price: "BUY 25 @ Rs.370", kind: "book", href: "/offset-printing", tone: "brown" },
-  { title: "Canvas Prints", price: "BUY 1 @ Rs.750", kind: "album", href: "/solvent-eco-solvent-printing" },
+  { title: "Booklets", kind: "book", href: "/offset-printing" },
+  { title: "Embroidered Laptop Bags", kind: "bag", href: "/corporate-gifts", tone: "black" },
+  { title: "Premium Laptop Bags", kind: "bag", href: "/corporate-gifts", tone: "navy" },
+  { title: "Presentation Folders", kind: "folder", href: "/offset-printing", tone: "yellow" },
+  { title: "Brochures", kind: "book", href: "/offset-printing", tone: "brown" },
+  { title: "Canvas Prints", kind: "album", href: "/solvent-eco-solvent-printing" },
 ];
 
 const arrivals: StoreProduct[] = [
-  { title: "Adidas Duffle Bags", price: "BUY 1 @ Rs.1400", kind: "bag", href: "/corporate-gifts", tone: "navy" },
-  { title: "Translite Board", price: "BUY 1 @ Rs.1500", kind: "board", href: "/signages", tone: "yellow" },
-  { title: "Lollipop Board", price: "BUY 1 @ Rs.2600", kind: "sign", href: "/signages", tone: "orange" },
-  { title: "Customised QR Code Stand", price: "BUY 1 @ Rs.220", kind: "qr", href: "/signages" },
-  { title: "Acrylic Signs", price: "BUY 1 @ Rs.650", kind: "acrylic", href: "/signages", tone: "white" },
-  { title: "Promotional Canopy Tents", price: "BUY 1 @ Rs.5750", kind: "canopy", href: "/solvent-eco-solvent-printing", tone: "brown" },
+  { title: "Adidas Duffle Bags", kind: "bag", href: "/corporate-gifts", tone: "navy" },
+  { title: "Translite Board", kind: "board", href: "/signages", tone: "yellow" },
+  { title: "Lollipop Board", kind: "sign", href: "/signages", tone: "orange" },
+  { title: "Customised QR Code Stand", kind: "qr", href: "/signages" },
+  { title: "Acrylic Signs", kind: "acrylic", href: "/signages", tone: "white" },
+  { title: "Promotional Canopy Tents", kind: "canopy", href: "/solvent-eco-solvent-printing", tone: "brown" },
 ];
 
 const iconMap = {
@@ -148,7 +150,13 @@ function ProductVisual({ kind, tone = "" }: { kind: ProductKind; tone?: string }
 function ProductRow({ title, items }: { title: string; items: StoreProduct[] }) {
   return (
     <section className="vp-product-section">
-      <h2>{title}</h2>
+      <div className="vp-section-heading">
+        <h2>{title}</h2>
+        <Link href={items[0]?.href ?? "/contact"}>
+          View all
+          <ArrowRight size={16} />
+        </Link>
+      </div>
       <div className="vp-card-row protected-content">
         {items.map((item) => (
           <a
@@ -158,7 +166,6 @@ function ProductRow({ title, items }: { title: string; items: StoreProduct[] }) 
             target="_blank"
             rel="noreferrer"
           >
-            <span className="vp-price-badge">{item.price}</span>
             <ProductVisual kind={item.kind} tone={item.tone} />
             <strong>{item.title}</strong>
           </a>
@@ -184,10 +191,12 @@ export default function Home() {
             </div>
           </div>
           <div className="vp-hero-copy">
-            <h1>Visiting Cards</h1>
-            <p>100 Visiting Cards at Rs. 200</p>
-            <a href={orderUrl("Visiting Cards")} target="_blank" rel="noreferrer">
-              Shop Now
+            <span className="vp-hero-kicker">Designing | Printing | Branding</span>
+            <h1>Print material that makes your brand feel ready.</h1>
+            <p>Business stationery, labels, signage, uniforms and gifts planned through one fast WhatsApp enquiry.</p>
+            <a href={orderUrl("Custom Printing Requirement")} target="_blank" rel="noreferrer">
+              Start a project
+              <ArrowRight size={15} />
             </a>
           </div>
         </article>
@@ -198,25 +207,50 @@ export default function Home() {
             <div className="shirt-model light">A</div>
           </div>
           <div className="vp-hero-copy apparel-copy">
-            <h2>Wear your brand with pride</h2>
-            <p>Starting at Rs. 320</p>
+            <span className="vp-hero-kicker">Popular paths</span>
+            <h2>What do you need today?</h2>
+            <p>Pick a common requirement and send details directly.</p>
             <div className="hero-button-row">
-              <a href={orderUrl("Custom Polo T-shirts")} target="_blank" rel="noreferrer">
-                Custom Polo T-shirts
+              <a href={orderUrl("Visiting Cards")} target="_blank" rel="noreferrer">
+                Visiting Cards
               </a>
-              <a href={orderUrl("Custom T-shirts")} target="_blank" rel="noreferrer">
-                Custom T-shirts
+              <a href={orderUrl("Labels and Stickers")} target="_blank" rel="noreferrer">
+                Labels
               </a>
-              <a href={orderUrl("Custom Caps")} target="_blank" rel="noreferrer">
-                Caps
+              <a href={orderUrl("Signage")} target="_blank" rel="noreferrer">
+                Signage
+              </a>
+              <a href={orderUrl("Corporate Gifts")} target="_blank" rel="noreferrer">
+                Gifts
               </a>
             </div>
           </div>
         </article>
       </section>
 
+      <section className="vp-trust-strip" aria-label="Service highlights">
+        <div>
+          <CheckCircle2 size={18} />
+          <span>Low quantity orders</span>
+        </div>
+        <div>
+          <Printer size={18} />
+          <span>Print, fabrication and gifts</span>
+        </div>
+        <div>
+          <Truck size={18} />
+          <span>Local delivery support</span>
+        </div>
+      </section>
+
       <section className="vp-product-section" id="categories">
-        <h2>Explore all categories</h2>
+        <div className="vp-section-heading">
+          <h2>Explore all categories</h2>
+          <Link href="/digital-printing">
+            Browse services
+            <ArrowRight size={16} />
+          </Link>
+        </div>
         <div className="vp-card-row protected-content">
           {categories.map((item) => (
             <Link className="vp-category-card" href={item.href} key={item.title}>

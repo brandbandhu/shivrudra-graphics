@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
 import { CopyProtection } from "@/components/CopyProtection";
-import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
-import { SimpleChatbot } from "@/components/SimpleChatbot";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { company } from "@/lib/site-data";
@@ -39,8 +37,6 @@ export default function RootLayout({
         <CopyProtection />
         <SiteHeader />
         {children}
-        <SimpleChatbot />
-        <FloatingWhatsApp />
         <SiteFooter />
       </body>
     </html>

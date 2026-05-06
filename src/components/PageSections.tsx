@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Home, Layers3, MessageCircle, Palette } from "lucide-react";
 import {
   allProducts,
   clients,
@@ -18,11 +18,114 @@ import { WhatsAppLeadForm } from "@/components/WhatsAppLeadForm";
 const serviceOptions = servicePages.map((page) => page.navLabel);
 const productOptions = allProducts.map((item) => item.product);
 
+function productVisualClass(product: string) {
+  const normalized = product.toLowerCase();
+
+  if (normalized.includes("card") || normalized.includes("certificate") || normalized.includes("voucher")) {
+    return "visual-cards";
+  }
+
+  if (normalized.includes("shirt") || normalized.includes("uniform") || normalized.includes("fabric")) {
+    return "visual-shirt";
+  }
+
+  if (normalized.includes("cap")) {
+    return "visual-cap";
+  }
+
+  if (normalized.includes("sticker") || normalized.includes("label") || normalized.includes("tag")) {
+    return "visual-sticker";
+  }
+
+  if (normalized.includes("album") || normalized.includes("photo") || normalized.includes("frame")) {
+    return "visual-album";
+  }
+
+  if (normalized.includes("bag") || normalized.includes("folder") || normalized.includes("book")) {
+    return "visual-bag";
+  }
+
+  if (normalized.includes("letterhead") || normalized.includes("envelope") || normalized.includes("pad")) {
+    return "visual-folder";
+  }
+
+  if (normalized.includes("sign") || normalized.includes("board") || normalized.includes("standee")) {
+    return "visual-sign";
+  }
+
+  if (normalized.includes("stamp") || normalized.includes("print")) {
+    return "visual-stamp";
+  }
+
+  if (normalized.includes("bottle") || normalized.includes("mug") || normalized.includes("tumbler")) {
+    return "visual-bottle";
+  }
+
+  return "visual-book";
+}
+
+const heroImageSets: Record<string, string[]> = {
+  "about-us": ["stationery", "signage", "business-cards", "notebook"],
+  "vision-mission-values": ["notebook", "stationery", "business-cards", "photo"],
+  "commitment-timeline": ["business-cards", "stationery", "signage", "notebook"],
+  "why-choose-us": ["stationery", "business-cards", "packaging", "signage"],
+  "industries-we-serve": ["signage", "packaging", "apparel", "stationery"],
+  designing: ["stationery", "business-cards", "stickers", "photo"],
+  "solvent-eco-solvent-printing": ["signage", "shipping", "stickers", "packaging"],
+  "digital-printing": ["stickers", "business-cards", "photo", "packaging"],
+  "offset-printing": ["business-cards", "stationery", "notebook", "photo"],
+  "stamps-screen-pad-printing": ["stationery", "packaging", "stickers", "business-cards"],
+  "badges-stickers-keychains": ["stickers", "photo", "packaging", "business-cards"],
+  "corporate-gifts": ["apparel", "photo", "notebook", "packaging"],
+  "engraving-marking": ["notebook", "stationery", "signage", "packaging"],
+  signages: ["signage", "shipping", "stickers", "business-cards"],
+  "premium-safety-signages": ["signage", "shipping", "packaging", "stickers"],
+  "laser-cnc-ferrule-printing": ["signage", "stationery", "packaging", "stickers"],
+  "trophies-medals-nameplates": ["photo", "notebook", "stationery", "signage"],
+  clients: ["signage", "business-cards", "stationery", "photo"],
+  contact: ["stationery", "signage", "notebook", "business-cards"],
+};
+
+function heroImages(page: CataloguePage) {
+  return heroImageSets[page.slug] ?? ["business-cards", "stationery", "notebook", "photo"];
+}
+
+function breadcrumbGroup(page: CataloguePage) {
+  if (page.slug === "contact") {
+    return "Contact";
+  }
+
+  if (page.slug === "clients") {
+    return "Work";
+  }
+
+  if (page.slug === "industries-we-serve") {
+    return "Industries";
+  }
+
+  if (page.products?.length) {
+    return "Services";
+  }
+
+  return "Company";
+}
+
 export function PageHero({ page }: { page: CataloguePage }) {
-  const Icon = page.icon;
+  const group = breadcrumbGroup(page);
+  const images = heroImages(page);
 
   return (
-    <section className={`page-hero accent-${page.accent}`}>
+    <section className={`page-hero offset-hero accent-${page.accent}`}>
+      <nav className="page-breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">
+          <Home size={14} />
+          Home
+        </Link>
+        <span>/</span>
+        <span>{group}</span>
+        <span>/</span>
+        <strong>{page.navLabel}</strong>
+      </nav>
       <div className="page-hero-copy protected-content">
         <span className="eyebrow">{page.eyebrow}</span>
         <h1>{page.title}</h1>
@@ -38,10 +141,46 @@ export function PageHero({ page }: { page: CataloguePage }) {
           </Link>
         </div>
       </div>
-      <div className="hero-visual protected-media" aria-label={`${page.navLabel} visual preview`}>
-        <Icon size={76} />
-        <span>{page.navLabel}</span>
-        <small>Protected preview</small>
+      <div className="hero-visual service-visual offset-visual protected-media" aria-label={`${page.navLabel} visual preview`}>
+        {images.map((image, index) => (
+          <div
+            className={`service-image-tile service-tile-${index + 1} hero-img-${image}`}
+            key={`${page.slug}-${image}-${index}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function OffsetShowcase() {
+  const steps = [
+    { title: "Artwork Check", text: "Share files, size, paper and quantity before production starts.", icon: FileText },
+    { title: "Color Planning", text: "Keep stationery, catalogues and brand material visually consistent.", icon: Palette },
+    { title: "Finishing", text: "Discuss folds, binding, numbering, bags, tags and dispatch needs.", icon: Layers3 },
+  ];
+
+  return (
+    <section className="offset-showcase">
+      <div className="offset-showcase-copy">
+        <span className="eyebrow">Offset workflow</span>
+        <h2>Built for repeatable, clean business print runs.</h2>
+        <p>
+          From visiting cards to catalogues, offset jobs need clarity before the press starts.
+          This page helps customers move from product selection to a precise WhatsApp enquiry.
+        </p>
+      </div>
+      <div className="offset-step-grid protected-content">
+        {steps.map((step) => {
+          const StepIcon = step.icon;
+          return (
+            <article key={step.title}>
+              <StepIcon size={22} />
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </article>
+          );
+        })}
       </div>
     </section>
   );
@@ -85,13 +224,11 @@ export function Products({ page }: { page: CataloguePage }) {
       </div>
 
       <div className="product-grid protected-content">
-        {page.products.map((product, index) => (
+        {page.products.map((product) => (
           <article className="product-card" key={product}>
-            <div className={`product-media protected-media accent-${page.accent}`}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-            </div>
+            <div className={`product-media protected-media ${productVisualClass(product)}`} />
             <h3>{product}</h3>
-            <a href="#order">Start enquiry</a>
+            <a href="#order">Enquire</a>
           </article>
         ))}
       </div>
@@ -120,6 +257,10 @@ export function Materials({ page }: { page: CataloguePage }) {
 }
 
 export function SpecialSections({ page }: { page: CataloguePage }) {
+  if (page.slug === "offset-printing") {
+    return <OffsetShowcase />;
+  }
+
   if (page.slug === "commitment-timeline") {
     return (
       <section className="content-band">

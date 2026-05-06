@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import {
   Highlights,
   LeadSection,
-  Materials,
   PageHero,
   Products,
   RelatedServices,
@@ -46,7 +45,6 @@ export default async function CatalogueRoute({ params }: PageProps) {
       <PageHero page={page} />
       <SpecialSections page={page} />
       <Highlights page={page} />
-      <Materials page={page} />
       <Products page={page} />
       <LeadSection page={page} />
       <RelatedServices currentSlug={page.slug} />
