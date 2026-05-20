@@ -20,6 +20,8 @@ import {
   Trophy,
   Truck,
 } from "lucide-react";
+import { ComplaintForm } from "@/components/ComplaintForm";
+import { OrderForm } from "@/components/OrderForm";
 import { buildWhatsAppUrl, defaultWhatsAppMessage } from "@/lib/whatsapp";
 
 type ProductKind =
@@ -338,6 +340,26 @@ export default function Home() {
             Join on WhatsApp
           </a>
         </div>
+      </section>
+
+      <section className="vp-order-section" id="order-form">
+        <div className="vp-order-copy">
+          <h2>Place Your Order</h2>
+          <p>
+            Share product, quantity, deadline, and delivery details so our team can confirm pricing and production.
+          </p>
+        </div>
+        <OrderForm />
+      </section>
+
+      <section className="vp-complaint-section" id="complaint-form">
+        <div className="vp-complaint-copy">
+          <h2>Complaint and Maintenance Support</h2>
+          <p>
+            Raise support issues with order reference, issue type, priority, and resolution needed.
+          </p>
+        </div>
+        <ComplaintForm />
       </section>
 
       <section className="vp-info-grid">

@@ -589,11 +589,16 @@ export function SiteHeader() {
           />
         </Link>
 
-        <label className="header-search">
-          <span className="sr-only">Search products</span>
-          <input placeholder="Search" aria-label="Search products" />
-          <Search size={28} strokeWidth={2.3} />
-        </label>
+        <div className="header-search-row">
+          <label className="header-search">
+            <span className="sr-only">Search products</span>
+            <input placeholder="Search" aria-label="Search products" />
+            <Search size={28} strokeWidth={2.3} />
+          </label>
+          <Link className="header-order-now" href="/#order-form">
+            Order Now
+          </Link>
+        </div>
 
         <button
           className="icon-button mobile-menu-button"

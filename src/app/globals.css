@@ -1210,6 +1210,16 @@ select {
   color: var(--muted);
 }
 
+.error-note {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(228, 49, 43, 0.25);
+  border-radius: 14px;
+  background: rgba(228, 49, 43, 0.08);
+  color: #7d1b16;
+  font-weight: 650;
+}
+
 .file-note {
   border: 1px solid rgba(34, 38, 47, 0.08);
 }
@@ -1256,6 +1266,12 @@ select {
 .submit-button:focus-visible {
   outline: 3px solid rgba(228, 49, 43, 0.3);
   outline-offset: 4px;
+}
+
+.submit-button:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .enquiry-actions {
@@ -1477,6 +1493,31 @@ select {
 .footer-whatsapp:hover {
   border-color: rgba(32, 165, 103, 0.8);
   background: rgba(32, 165, 103, 0.2);
+  transform: translateY(-1px);
+}
+
+.footer-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-complaint-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(228, 49, 43, 0.48);
+  border-radius: 7px;
+  background: rgba(228, 49, 43, 0.12);
+  color: white;
+  font-weight: 850;
+}
+
+.footer-complaint-button:hover {
+  border-color: rgba(228, 49, 43, 0.82);
+  background: rgba(228, 49, 43, 0.24);
   transform: translateY(-1px);
 }
 
@@ -1909,7 +1950,7 @@ select {
 
 .header-main {
   display: grid;
-  grid-template-columns: minmax(230px, auto) minmax(280px, 560px);
+  grid-template-columns: minmax(230px, auto) minmax(320px, 1fr) auto;
   gap: 22px;
   max-width: 1920px;
   padding: 18px 40px 14px;
@@ -1937,8 +1978,16 @@ select {
   display: none;
 }
 
+.header-search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
 .header-search {
   display: flex;
+  flex: 1;
   align-items: center;
   gap: 12px;
   min-height: 46px;
@@ -1956,6 +2005,32 @@ select {
   color: #31343a;
   font-size: 15px;
   font-style: italic;
+}
+
+.header-order-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border: 1px solid #151515;
+  border-radius: 7px;
+  background: #151515;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 850;
+  white-space: nowrap;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.header-order-now:hover {
+  background: var(--red);
+  border-color: var(--red);
+  transform: translateY(-1px);
 }
 
 .header-actions {
@@ -3044,6 +3119,72 @@ select {
   min-width: 220px;
 }
 
+.vp-order-section {
+  display: grid;
+  gap: 22px;
+  max-width: 1240px;
+  margin: 62px auto 0;
+  padding: 0 32px;
+}
+
+#order-form {
+  scroll-margin-top: 120px;
+}
+
+.vp-order-copy h2 {
+  margin: 0 0 10px;
+  font-size: 30px;
+}
+
+.vp-order-copy p {
+  margin: 0;
+  max-width: 760px;
+  color: #3b4047;
+  font-size: 14px;
+  font-weight: 760;
+  line-height: 1.6;
+}
+
+.order-icon {
+  background: rgba(32, 165, 103, 0.16);
+  color: var(--green);
+}
+
+.vp-complaint-section {
+  display: grid;
+  gap: 22px;
+  max-width: 1240px;
+  margin: 62px auto 0;
+  padding: 0 32px;
+}
+
+#complaint-form {
+  scroll-margin-top: 120px;
+}
+
+.vp-complaint-copy h2 {
+  margin: 0 0 10px;
+  font-size: 30px;
+}
+
+.vp-complaint-copy p {
+  margin: 0;
+  max-width: 760px;
+  color: #3b4047;
+  font-size: 14px;
+  font-weight: 760;
+  line-height: 1.6;
+}
+
+.complaint-icon {
+  background: rgba(228, 49, 43, 0.16);
+  color: var(--red);
+}
+
+.complaint-form textarea {
+  min-height: 110px;
+}
+
 .vp-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3401,6 +3542,17 @@ select {
     align-self: flex-start;
   }
 
+  .footer-action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .footer-whatsapp,
+  .footer-complaint-button {
+    justify-content: center;
+  }
+
   .form-grid {
     grid-template-columns: 1fr;
   }
@@ -3475,6 +3627,14 @@ select {
     padding-inline: 24px;
   }
 
+  .vp-order-section {
+    padding-inline: 24px;
+  }
+
+  .vp-complaint-section {
+    padding-inline: 24px;
+  }
+
   .vp-info-grid article:first-child {
     grid-row: auto;
   }
@@ -3492,9 +3652,13 @@ select {
     height: 40px;
   }
 
-  .header-search {
+  .header-search-row {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+
+  .header-order-now {
+    min-height: 48px;
   }
 
   .shop-nav {
@@ -3627,6 +3791,16 @@ select {
     padding-block: 28px;
   }
 
+  .vp-order-section {
+    margin-top: 42px;
+    padding-inline: 16px;
+  }
+
+  .vp-complaint-section {
+    margin-top: 42px;
+    padding-inline: 16px;
+  }
+
   .vp-subscribe-copy {
     text-align: center;
   }
@@ -3720,8 +3894,11 @@ select {
     font-size: 13px;
   }
 
-  .header-search {
+  .header-search-row {
     grid-column: 1 / -1;
+  }
+
+  .header-search {
     min-height: 48px;
   }
 

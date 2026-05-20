@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, ClipboardList, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { company, pages, servicePages } from "@/lib/site-data";
 import { defaultWhatsAppMessage } from "@/lib/whatsapp";
 
@@ -89,15 +89,21 @@ export function SiteFooter() {
               {company.officeAddress}
             </li>
           </ul>
-          <a
-            className="footer-whatsapp"
-            href={defaultWhatsAppMessage()}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <MessageCircle size={16} />
-            WhatsApp Shivrudra
-          </a>
+          <div className="footer-action-row">
+            <a
+              className="footer-whatsapp"
+              href={defaultWhatsAppMessage()}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageCircle size={16} />
+              WhatsApp Shivrudra
+            </a>
+            <Link className="footer-complaint-button" href="/#complaint-form">
+              <ClipboardList size={16} />
+              Complaint Form
+            </Link>
+          </div>
         </div>
       </div>
 
